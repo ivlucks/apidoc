@@ -1,0 +1,32 @@
+{
+  "name": "junguo/yii2-apidoc",
+  "description": "yii2 api doc by php exlanatory note",
+  "type": "yii2-extension",
+  "authors": [
+    {
+      "name": "junguo",
+      "email": "1423844263@qq.com"
+    }
+  ],
+  "keywords": [
+    "yii2",
+    "api",
+    "php exlanatory"
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "yiisoft/yii2": "~1.0.0",
+    "yiisoft/yii2-redis": "^2.0.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "junguo\\apidoc\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
+}
