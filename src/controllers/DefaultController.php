@@ -5,9 +5,7 @@ namespace junguo\apidoc\controllers;
 use junguo\apidoc\models\Language;
 use junguo\apidoc\models\LoginForm;
 use \yii;
-
 header('Content-type:text/html;charset=utf-8');
-
 class DefaultController extends \yii\web\Controller
 {
     public $layout = 'column1';
@@ -113,7 +111,6 @@ class DefaultController extends \yii\web\Controller
                                                  );
                             Yii::$app->cache->set($cache_key,$_data);
                       }
-
             $controllers[substr($class, 0, -10)] =$_data;
         }
         return $controllers;
