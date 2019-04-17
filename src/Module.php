@@ -57,7 +57,6 @@ class Module extends \yii\base\Module
                 'loginUrl'      => \Yii::$app->urlManager->createUrl($this->id . '/default/login'),
            ],
         ), false);
-
     }
 
     /**
