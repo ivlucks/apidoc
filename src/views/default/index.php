@@ -29,7 +29,7 @@ $this->title = '接口系统文档';
                     <li class="dropdown"></li>
                     <li><span>&nbsp;<br></span></li>
                     <li><span>&nbsp;<br></span></li>
-                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>"><br></a></li>
+                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>" ><br></a></li>
                 </ul>
 
             </div>
@@ -89,6 +89,11 @@ $this->title = '接口系统文档';
                         $url = str_ireplace('/-', '/', preg_replace_callback('/[A-Z]/', function ($match) {
                             return '-' . strtolower($match[0]);
                         }, $url));
+                        if($token){
+                            $headers[]  =  "Accept:application/json";
+                            $headers[]  =  "Authorization: Bearer ". $token;
+                            $url        =  $url.'?'.$this->context->module->tokenname.'='.$token;
+                        }
                         echo $url;
                         \Yii::$app->urlManager->baseUrl  ='';
                         ?>" enctype="multipart/form-data">
@@ -232,7 +237,7 @@ $this->title = '接口系统文档';
                 beforeSubmit: function (paramsObj) {
                     var formActionUrl = $("#invokeForm").attr("action");
                     reStoreInputVal(paramsObj, formActionUrl);
-                  <?php if ($token){ ?>
+                  <?php if ($token&&$method!="GET"){ ?>
                     var arr ={};
                     arr = { "name":'<?=$this->context->module->tokenname?>', "value":'<?=$token?>', "type": "text"};
                     paramsObj.push(arr);
