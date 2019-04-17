@@ -12,8 +12,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "yiisoft/yii2": "~2.0.13",
-    "yiisoft/yii2-redis": "^2.0.9"
+    "yiisoft/yii2": "*",
+    "yiisoft/yii2-redis": "*"
   },
   "autoload": {
     "psr-4": {
