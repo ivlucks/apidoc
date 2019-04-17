@@ -52,7 +52,7 @@ $config['modules']['apidoc'] = [
   apppath    |api模块路径
   ctrs      | api下根controllers,可多个
   tokenname  |测试时使用.
-  domain  |实际api的请求域名  不是统一域名要注意跨域问题 在API的index文件添加 header('access-Control-Allow-Origin:*');
+  domain  |实际api的请求域名  不是同一域名下要注意跨域问题 在API的index.php文件添加 header('access-Control-Allow-Origin:*');
 ## Phpstrom 注释配置：
 打开phpstrom->setting->Editor->File and Code Templates->Includes，将两个文件内容替换原本的文件内容,点击apply即可
 
