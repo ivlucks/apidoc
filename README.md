@@ -4,7 +4,7 @@
     3、自定义域名,
     4、自定义app路径,
     5、增加令牌已方便测试
-    
+    6、精简部分不需要的参数
 ## 安装
 composer require junguo/yii2-apidoc
 
