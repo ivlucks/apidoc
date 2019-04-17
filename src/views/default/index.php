@@ -29,7 +29,7 @@ $this->title = '接口系统文档';
                     <li class="dropdown"></li>
                     <li><span>&nbsp;<br></span></li>
                     <li><span>&nbsp;<br></span></li>
-                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>" ><br></a></li>
+                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>" class="append-16" ><br></a></li>
                 </ul>
 
             </div>
