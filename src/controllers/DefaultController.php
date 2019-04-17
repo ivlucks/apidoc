@@ -106,7 +106,9 @@ class DefaultController extends \yii\web\Controller
                                         unset($method);
                                     }
                                 }
-                             $_data =array_merge(['id' => substr($class, 0, -10), 'actions' => $actions, 'brief'   => '-'.$class_name],
+                             $_data =array_merge(['id'      => substr($class, 0, -10),
+                                                  'actions' =>  $actions,
+                                                  'brief'   =>  '-'.$class_name],
                                                  $this->extractProperty($rc->getDocComment())
                                                  );
                             Yii::$app->cache->set($cache_key,$_data);
@@ -192,8 +194,11 @@ class DefaultController extends \yii\web\Controller
         $part = explode(' ', trim($paramInfo));
         if (!empty($part[0])) $param['type'] = $part[0];
         if (!empty($part[1])) $param['name'] = $part[1];
+        unset($part[0]);
+        unset($part[1]);
+        $detail = implode(' ',$part);
         if ('unknown' != $param['name'] && !empty($param['name'])) {
-            $param['detail']   = $part[2]??"未注明";
+            $param['detail']   =$detail??"未注明";
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
         }
