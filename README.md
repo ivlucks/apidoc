@@ -1,10 +1,10 @@
 ## 项目描述
     1、github找到的项目都无法完美使用,根据实际开发出发完善
-    2、增加redis,加快速度,不用每次都去分析 ,
+    2、增加redis,加快解析速度
     3、自定义域名,
     4、自定义app路径,
-    5、增加令牌已方便测试
-    6、精简部分不需要的参数
+    5、增加令牌已方便测试,过期再生成
+    6、精简部分参数
 ## 安装
 composer require junguo/yii2-apidoc
 
@@ -75,6 +75,8 @@ ${THROWS_DOC}
 */
 ```
 
+
+
 PHP Class Doc Comment
 ```
 /**
@@ -82,9 +84,9 @@ PHP Class Doc Comment
 #if (${NAMESPACE}) * @package ${NAMESPACE}
 #end
 #if ('Module' == ${NAME})
-@jid-enable
-@jid-name 模块名称
-@jid-id 模块ID
+@apidoc-enable
+@apidoc-name 模块名称
+@apidoc-id 模块ID
 #elseif (${NAME.indexOf('Controller')}!=-1)
 @brief controller名称
 #end
@@ -122,3 +124,6 @@ apidoc-name    | 模块名称，将显示在页面上方 |
 1、配置modules模块注释
 2、配置controller类的注释
 3、配置action的注释
+
+## 感谢:
+基于 andrain/yii2-apidoc开发
