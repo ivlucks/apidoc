@@ -102,7 +102,7 @@ class DefaultController extends \yii\web\Controller
                                             'id'      => substr($name, 6),
                                             'version' => 1,
                                             'brief'   =>''
-                                        ], $this->extractProperty2($method->getDocComment()));
+                                        ], $this->extractProperty($method->getDocComment()));
                                         unset($method);
                                     }
                                 }
@@ -154,20 +154,6 @@ class DefaultController extends \yii\web\Controller
     {
         $modClass = '\\'.$this->module->apppath.'\modules\\' . $module . '\Module';
         return new \ReflectionClass($modClass);
-    }
-    protected function extractProperty2($comment, $prefix = '')
-    {
-        $properties = [];
-        if (preg_match_all('/@' . $prefix . '([a-zA-Z]+)\b([^@]+)/u', $comment, $matches)) {
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                if (in_array($matches[1][$i], ['param'])) {
-                    $properties[$matches[1][$i]][] = $this->extractParamInfo(str_replace('*', '', trim($matches[2][$i], '/')));
-                } else {
-                    $properties[$matches[1][$i]] = nl2br(preg_replace('/^\s*\n/', '', str_replace('*', '', trim($matches[2][$i], '/'))));
-                }
-            }
-        }
-        return $properties;
     }
     /**
      * @brief 提取注解属性
