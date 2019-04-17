@@ -76,7 +76,7 @@ class DefaultController extends \yii\web\Controller
             $tem_dir      =  $dirName.'/'.$d;
             $class        = '\\'.$base_path. '\\controllers\\' . substr($d, 0, -4);
             $class        =  str_replace('/','\\',$class);
-            $cache_key    =  $class.'-'. filemtime($tem_dir);
+            $cache_key    =  $class.'-'. @filemtime($tem_dir);
             $_data        =  [];
             $_data        =  Yii::$app->cache->get($cache_key);
             if (is_dir($tem_dir)) {
