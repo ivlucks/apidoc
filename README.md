@@ -82,9 +82,9 @@ PHP Class Doc Comment
 #if (${NAMESPACE}) * @package ${NAMESPACE}
 #end
 #if ('Module' == ${NAME})
-@jid-enable
-@jid-name 模块名称
-@jid-id 模块ID
+@apidoc-enable
+@apidoc-name 模块名称
+@apidoc-id 模块ID
 #elseif (${NAME.indexOf('Controller')}!=-1)
 @brief controller名称
 #end
