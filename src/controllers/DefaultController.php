@@ -193,7 +193,7 @@ class DefaultController extends \yii\web\Controller
         if (!empty($part[0])) $param['type'] = $part[0];
         if (!empty($part[1])) $param['name'] = $part[1];
         if ('unknown' != $param['name'] && !empty($param['name'])) {
-            $breif = substr($paramInfo, strpos($paramInfo, $param['name']) + strlen($param['name']));
+//            $breif = substr($paramInfo, strpos($paramInfo, $param['name']) + strlen($param['name']));
             $param['detail']   = $part[2]??"未注明";
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
