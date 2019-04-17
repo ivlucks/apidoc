@@ -1,6 +1,6 @@
 {
   "name": "junguo/yii2-apidoc",
-  "description": "市面上找了比较多的apidoc,但是都不怎么顺手,借鉴朋友的基础上.开发了适合中小型公司使用的文档系统,可调试,可作为文档,提高开发效率,提高生产力.注:这是基于Yii2的文档生成器",
+  "description": "市面上找了比较多的apidoc,但是都不怎么顺手,在朋友的基础上.开发了适合中小型公司使用的文档系统,可调试,可作为文档,提高开发效率,提高生产力.注:这是基于Yii2的文档生成器",
   "keywords": ["yii2", "api", "doc", "php exlanatory"],
   "license": "Apache-2.0",
   "type": "yii2-extension",
