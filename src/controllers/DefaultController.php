@@ -264,4 +264,17 @@ class DefaultController extends \yii\web\Controller
     {
       return Yii::$app->cache->set($this->module->tokenname,Yii::$app->request->get('token'));
     }
+    protected function logout()
+    {
+        unset($_SESSION['loginInfo']);
+    }
+
+    protected function isGuest()
+    {
+        if (!isset($_SESSION['loginInfo']['sid']) /*||  !\yii::$app->ocs->get($_SESSION['loginInfo']['sid'])*/) {
+            $this->logout();
+            return false;
+        }
+        return true;
+    }
 }
