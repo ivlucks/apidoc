@@ -10,9 +10,9 @@
       "email": "1423844263@qq.com"
     }
   ],
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "require": {
-    "yiisoft/yii2": "~*",
+    "yiisoft/yii2": "~2.0.13",
     "yiisoft/yii2-redis": "^2.0.9"
   },
   "autoload": {
