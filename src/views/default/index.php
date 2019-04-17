@@ -92,9 +92,9 @@ $this->title = '接口系统文档';
                         if($token){
                             $headers[]  =  "Accept:application/json";
                             $headers[]  =  "Authorization: Bearer ". $token;
-                            $url        =  $url.'?'.$this->context->module->tokenname.'='.$token;
+                            $_url        =  $url.'?'.$this->context->module->tokenname.'='.$token;
                         }
-                        echo $url;
+                        echo $_url;
                         \Yii::$app->urlManager->baseUrl  ='';
                         ?>" enctype="multipart/form-data">
                             <?php foreach ($params as $i => $p): ?>
