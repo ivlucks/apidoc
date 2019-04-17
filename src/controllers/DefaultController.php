@@ -193,7 +193,6 @@ class DefaultController extends \yii\web\Controller
         if (!empty($part[0])) $param['type'] = $part[0];
         if (!empty($part[1])) $param['name'] = $part[1];
         if ('unknown' != $param['name'] && !empty($param['name'])) {
-//            $breif = substr($paramInfo, strpos($paramInfo, $param['name']) + strlen($param['name']));
             $param['detail']   = $part[2]??"未注明";
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
@@ -228,18 +227,7 @@ class DefaultController extends \yii\web\Controller
         $this->logout();
         $this->redirect($jto);
     }
-    protected function logout()
-    {
-        unset($_SESSION['loginInfo']);
-    }
-    protected function isGuest()
-    {
-        if (!isset($_SESSION['loginInfo']['sid']) /*||  !\yii::$app->ocs->get($_SESSION['loginInfo']['sid'])*/) {
-            $this->logout();
-            return false;
-        }
-        return true;
-    }
+
     public function getPageTitle()
     {
         if ($this->action->id === 'index') return 'Gii: a Web-based code generator for Yii';
