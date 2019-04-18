@@ -5,6 +5,7 @@ namespace junguo\apidoc\controllers;
 use junguo\apidoc\models\Language;
 use junguo\apidoc\models\LoginForm;
 use \yii;
+
 header('Content-type:text/html;charset=utf-8');
 class DefaultController extends \yii\web\Controller
 {
@@ -198,7 +199,7 @@ class DefaultController extends \yii\web\Controller
         unset($part[1]);
         $detail = implode(' ',$part);
         if ('unknown' != $param['name'] && !empty($param['name'])) {
-            $param['detail']   =$detail??"未注明";
+            $param['detail']   = $detail??"未注明";
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
         }

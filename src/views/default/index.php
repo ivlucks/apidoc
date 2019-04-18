@@ -83,14 +83,15 @@ $this->title = '接口系统文档';
                         <form id="invokeForm" class="form-horizontal" role="form" method="<?= trim(str_replace('<br />', '', $method)) ?>" action="
                     <?php
                         \Yii::$app->urlManager->baseUrl  =  $this->context->module->domain;
-                        $url = \Yii::$app->urlManager->createAbsoluteUrl('' . '/' . lcfirst($module) . '/' . lcfirst($shortController) . '/' . lcfirst($action));
-                        $url = str_ireplace('/-', '/', preg_replace_callback('/[A-Z]/', function ($match) {
-                            return '-' . strtolower($match[0]);
-                        }, $url));
+                        if($module=='controllers'){
+                            $_module = '';
+                           }else{
+                            $_module = lcfirst($module) . '/' ;
+                        }
+                        $url = \Yii::$app->urlManager->createAbsoluteUrl('' . '/' .$_module. lcfirst($shortController) . '/' . lcfirst($action));
+                        $url = str_ireplace('/-', '/', preg_replace_callback('/[A-Z]/', function ($match) { return '-' . strtolower($match[0]);}, $url));
                         if($token){
-                            if($this->context->module->token_type==1){
-                                $url         =  $url.'?'.$this->context->module->tokenname.'='.$token;
-                            }
+                            if($this->context->module->token_type==1) $url         =  $url.'?'.$this->context->module->tokenname.'='.$token;
                             if($this->context->module->token_type==3){
                                 $headers[]   =  "Accept:application/json";
                                 $headers[]   =  "Authorization: Bearer ". $token;
