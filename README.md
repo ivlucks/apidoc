@@ -1,9 +1,9 @@
 ## 项目描述
-    1、github找到的项目都无法完美使用,根据实际开发出发完善
+    1、根据实际开发出发完善,已在公司使用
     2、增加redis,加快解析速度
-    3、自定义域名,
+    3、自定义域名,文档,api分开
     4、自定义app路径,
-    5、增加令牌已方便测试,过期再生成
+    5、增加令牌已方便测试,过期再生成,自动保存
     6、精简部分参数
 ## 安装
 composer require junguo/yii2-apidoc
@@ -26,7 +26,7 @@ composer require junguo/yii2-apidoc
     "yiisoft/yii2-redis": "^2.0.9"
 ```
 ## 项目配置：
-将下方配置引入入口文件main-local.php或你认为合适的配置文件( 正式环境不要引入）：
+将下方配置引入入口文件main-local.php或按照项目配置文件( 正式环境不要引入）：
 ``` php
 $config['modules']['apidoc'] = [
     'class'=>'junguo\apidoc\Module',
@@ -35,6 +35,7 @@ $config['modules']['apidoc'] = [
     'domain'=>'api.xxx.com',//api请求域名,一般文档和api不在同一域名下.api头部添加header('access-Control-Allow-Origin:*'); ,否则会出现跨域问题
     'tokenname'=>'access-token', // 令牌键值
      'apppath' => 'api',      //api模块路径
+    'token_type' => '1',      //令牌以明文方式上传,其他参数见文档,默认1
     'ctrs' =>['controllers'], //  apppath下其他Controller 路径
     'subOfClasses' => [], //需要继承的classes
 ];
@@ -51,8 +52,9 @@ $config['modules']['apidoc'] = [
   subOfClasses | 需要继承的指定class,若为空则将所有controller囊括，否则必须继承这些类才会显示在页面上
   apppath    |api模块路径
   ctrs      | api下根controllers,可多个
-  tokenname  |测试时使用.
-  domain  |实际api的请求域名  不是同一域名下要注意跨域问题 在API的index.php文件添加 header('access-Control-Allow-Origin:*');
+  tokenname  | 测试时使用.
+  domain  | 实际api的请求域名  不是同一域名下要注意跨域问题 在API的index.php文件添加 header('access-Control-Allow-Origin:*');
+  token_type' => '1'     | 1令牌以明文方式上传,默认1,2 post参数形式3 header Bearer
 ## Phpstrom 注释配置：
 打开phpstrom->setting->Editor->File and Code Templates->Includes，将两个文件内容替换原本的文件内容,点击apply即可
 
@@ -74,8 +76,6 @@ ${PARAM_DOC}
 ${THROWS_DOC}
 */
 ```
-
-
 
 PHP Class Doc Comment
 ```
@@ -126,4 +126,4 @@ apidoc-name    | 模块名称，将显示在页面上方 |
 3、配置action的注释
 
 ## 感谢:
-基于 andrain/yii2-apidoc开发
+基于 landrain/yii2-apidoc开发

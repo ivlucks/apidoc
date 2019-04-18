@@ -31,7 +31,6 @@ $this->title = '接口系统文档';
                     <li><span>&nbsp;<br></span></li>
                     <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>" class="append-16" ><br></a></li>
                 </ul>
-
             </div>
         </nav>
     </div>
@@ -81,8 +80,7 @@ $this->title = '接口系统文档';
                     <?php if (empty($controller) || empty($action)): ?>
                         <h3 class="panel-title"><?= Language::t('interfaceError');?></h3>
                     <?php else: ?>
-                        <form id="invokeForm" class="form-horizontal" role="form"
-                              method="<?= trim(str_replace('<br />', '', $method)) ?>" action="
+                        <form id="invokeForm" class="form-horizontal" role="form" method="<?= trim(str_replace('<br />', '', $method)) ?>" action="
                     <?php
                         \Yii::$app->urlManager->baseUrl  =  $this->context->module->domain;
                         $url = \Yii::$app->urlManager->createAbsoluteUrl('' . '/' . lcfirst($module) . '/' . lcfirst($shortController) . '/' . lcfirst($action));
@@ -90,11 +88,15 @@ $this->title = '接口系统文档';
                             return '-' . strtolower($match[0]);
                         }, $url));
                         if($token){
-                            $headers[]  =  "Accept:application/json";
-                            $headers[]  =  "Authorization: Bearer ". $token;
-                            $_url        =  $url.'?'.$this->context->module->tokenname.'='.$token;
+                            if($this->context->module->token_type==1){
+                                $url         =  $url.'?'.$this->context->module->tokenname.'='.$token;
+                            }
+                            if($this->context->module->token_type==3){
+                                $headers[]   =  "Accept:application/json";
+                                $headers[]   =  "Authorization: Bearer ". $token;
+                            }
                         }
-                        echo $_url;
+                        echo $url;
                         \Yii::$app->urlManager->baseUrl  ='';
                         ?>" enctype="multipart/form-data">
                             <?php foreach ($params as $i => $p): ?>
@@ -237,7 +239,7 @@ $this->title = '接口系统文档';
                 beforeSubmit: function (paramsObj) {
                     var formActionUrl = $("#invokeForm").attr("action");
                     reStoreInputVal(paramsObj, formActionUrl);
-                  <?php if ($token&&$method!="GET"){ ?>
+                  <?php if ($token && $this->context->module->token_type==2){ ?>
                     var arr ={};
                     arr = { "name":'<?=$this->context->module->tokenname?>', "value":'<?=$token?>', "type": "text"};
                     paramsObj.push(arr);

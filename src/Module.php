@@ -38,6 +38,12 @@ class Module extends \yii\base\Module
     public $tokenname = 'accessToken';
     public $domain='';
     public $ctrs='';
+/*
+ * 1 url(get 传参)
+ * 2 参数(POST 传参)
+ * 3 header Bearer
+ * */
+    public $token_type='1';
     /**
      * Initializes the  module.
      */
