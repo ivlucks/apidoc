@@ -83,7 +83,7 @@ $this->title = '接口系统文档';
                         <form id="invokeForm" class="form-horizontal" role="form" method="<?= trim(str_replace('<br />', '', $method)) ?>" action="
                     <?php
                         \Yii::$app->urlManager->baseUrl  =  $this->context->module->domain;
-                        if($module=='controllers'){
+                        if(in_array($module,$this->context->module->ctrs)){
                             $_module = '';
                            }else{
                             $_module = lcfirst($module) . '/' ;
