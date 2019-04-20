@@ -34,8 +34,7 @@ class DefaultController extends \yii\web\Controller
             'params'          => $params,
             'return'          => isset($controllers[$controller]['actions'][$action]['return']) ? $controllers[$controller]['actions'][$action]['return'] : '未填写',
             'exception'       => isset($controllers[$controller]['actions'][$action]['throws']) ? $controllers[$controller]['actions'][$action]['throws'] : '未填写',
-            'title'           => '接口系统文档',
-            'loginInfo'       => $this->isGuest() ? $_SESSION['loginInfo'] : []
+            'title'           => '接口测试系统文档'
         ]);
     }
     /**
@@ -91,14 +90,32 @@ class DefaultController extends \yii\web\Controller
                      if(empty($_data)){
                                 $actions = [];
                                 $class_name = str_replace('Controller','',substr($d, 0, -4));
-                                $rc = new \ReflectionClass($class);
+                                $rc  = new \ReflectionClass($class);
+                                $prc = new \ReflectionClass(get_parent_class($class));;
                                 if (!$this->isSubclassOfList($rc))continue;
-                                $rm = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
+                                if (preg_match('/@api-disable/', $rc->getDocComment())){
+                                    continue;
+                                }
+//                                if (preg_match('/@ext-inable'  . '([\s]+)([a-zA-Z]+)\b([^@]+)/u', $rc->getDocComment(),$mathches)){
+//                                     $outfun   =   str_replace('*', '', $mathches[0]);
+//                                     $outfun   =   str_replace('@ext-inable', '', $outfun );
+//                                     $outfun   =   str_replace('  ', ' ', $outfun );
+//                                     $outfun   =   preg_replace("/\s/","",$outfun);
+//                                     $funs     =  explode(',',strtolower($outfun));
+//                                 }
+                                $rm  = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
+//                                $prm = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
                                 foreach ($rm as $m) {
-                                    $name = $m->getName();
+                                    $name  = $m->getName();
+
                                     if (!preg_match('/action*/', $m) || $name == 'actions') continue;
+//                                    $_name = preg_replace('/action/','',strtolower($name));
+//                                    if(in_array($_name,$funs))continue;
                                     if (!strncasecmp($name, 'action', 6) && $name != 'actions') {
                                         $method = new \ReflectionMethod($class, $name);
+                                        if (preg_match('/@api-disable/', $method->getDocComment())){
+                                            continue;
+                                        }
                                         $actions[substr($name, 6)] = array_merge([
                                             'id'      => substr($name, 6),
                                             'version' => 1,
@@ -107,14 +124,16 @@ class DefaultController extends \yii\web\Controller
                                         unset($method);
                                     }
                                 }
-                             $_data =array_merge(['id'      => substr($class, 0, -10),
-                                                  'actions' =>  $actions,
-                                                  'brief'   =>  '-'.$class_name],
-                                                 $this->extractProperty($rc->getDocComment())
-                                                 );
-                            Yii::$app->cache->set($cache_key,$_data);
+                             if(!empty($actions)){
+                                 $_data =array_merge(['id'      => substr($class, 0, -10),
+                                     'actions' =>  $actions,
+                                     'brief'   =>  '-'.$class_name],
+                                     $this->extractProperty($rc->getDocComment())
+                                 );
+                                 Yii::$app->cache->set($cache_key,$_data);
+                             }
                       }
-            $controllers[substr($class, 0, -10)] =$_data;
+            if(!empty($_data)) $controllers[substr($class, 0, -10)] =$_data;
         }
         return $controllers;
 
@@ -133,13 +152,8 @@ class DefaultController extends \yii\web\Controller
         foreach ($dirs as $d) {
             if (preg_match('/^\..*/', $d)) continue;
             if (strpos($d, '.php')) continue;
-            $rc = $this->getReflectionModuleClass($parent, $d);
-            //检测是否存在开关标记
-            if (!preg_match('/@apidoc-enable/', $rc->getDocComment())) continue;
-            $properties = $this->extractProperty($rc->getDocComment(), 'apidoc-');
-            foreach (['id', 'name'] as $i) {
-                if (empty($properties[$i])) throw new \yii\base\Exception(sprintf(Language::t('propertyException'), $d, $i));
-            }
+            $properties['id']   =$d;
+            $properties['name'] = $d;
             $modules[$d] = $properties;
         }
         if(!empty($this->module->ctrs)){
@@ -203,7 +217,6 @@ class DefaultController extends \yii\web\Controller
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
         }
-
         $param['name'] = str_replace('$', '', $param['name']);
         return $param;
     }
@@ -212,33 +225,6 @@ class DefaultController extends \yii\web\Controller
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
-    /**
-     * @brief 记录用户登陆状态
-     * @param $account
-     * @param $uid
-     * @param $sid
-     */
-    public function actionUserlogin($account, $uid, $sid)
-    {
-        $_SESSION['loginInfo'] = ['account' => $account, 'uid' => $uid, 'sid' => $sid];
-    }
-    /**
-     * @brief 消除用户登陆状态
-     * @param $account
-     * @param $uid
-     * @param $sid
-     */
-    public function actionUserlogout($jto)
-    {
-        $this->logout();
-        $this->redirect($jto);
-    }
-
-    public function getPageTitle()
-    {
-        if ($this->action->id === 'index') return 'Gii: a Web-based code generator for Yii';
-        else return 'Gii - '.ucfirst($this->action->id) . ' Generator';
-    }
     public function actionError()
     {
         if ($error = \yii::$app->errorHandler->error) {
@@ -246,41 +232,9 @@ class DefaultController extends \yii\web\Controller
             else $this->render('error', $error);
         }
     }
-    /**
-     * @brief 登入
-     */
-    public function actionLogin()
-    {
-        $model = new LoginForm();
-        if (isset($_POST['LoginForm'])) {
-            $model->attributes = $_POST['LoginForm'];
-            if ($model->validate() && $model->login()) $this->redirect(\yii::$app->urlManager->createUrl('apidoc/default/index'));
-        }
-        return $this->render('login', array('model' => $model));
-    }
-    /**
-     * @brief 登出
-     */
-    public function actionLogout()
-    {
-        \yii::$app->user->logout(false);
-        $this->redirect(\yii::$app->urlManager->createUrl('apidoc/default/index'));
-    }
+
     public function actionAjaxToken()
     {
       return Yii::$app->cache->set($this->module->tokenname,Yii::$app->request->get('token'));
-    }
-    protected function logout()
-    {
-        unset($_SESSION['loginInfo']);
-    }
-
-    protected function isGuest()
-    {
-        if (!isset($_SESSION['loginInfo']['sid']) /*||  !\yii::$app->ocs->get($_SESSION['loginInfo']['sid'])*/) {
-            $this->logout();
-            return false;
-        }
-        return true;
     }
 }

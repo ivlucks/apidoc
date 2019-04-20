@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chenhongwei
- * Date: 2015/5/25
- * Time: 16:35
- */
 namespace junguo\apidoc\assets;
 
 class JidAsset extends \yii\web\AssetBundle

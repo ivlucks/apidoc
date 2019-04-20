@@ -1,10 +1,10 @@
 ## 项目描述
-    1、根据实际开发出发完善,已在公司使用
-    2、增加redis,加快解析速度
-    3、自定义域名,文档,api分开
-    4、自定义app路径,
-    5、增加令牌已方便测试,过期再生成,自动保存
-    6、精简部分参数
+    1、增加redis,加快解析速度
+    2、自定义域名,文档,api分开
+    3、自定义app路径,
+    4、增加令牌已方便测试,过期再生成,自动保存
+    5、精简部分参数
+    6、开放权限下降class,method
 ## 安装
 composer require junguo/yii2-apidoc
 
@@ -97,16 +97,8 @@ PHP Class Doc Comment
 
 
 ## 使用apidoc编写程序注释
-1、检索项目第一级目录下的Modules模块下所有Module.php文件，注释参数如下：
 
-  注释参数  | 作用 | 备注
-  ------------- | ------------- |  -------------
-apidoc-enable  | 标明此module将被收录到文档中 |
-apidoc-id      | id值 |
-apidoc-name    | 模块名称，将显示在页面上方 |
-
-
-2、检索modules具体模块下controllers文件夹下所有controller文件，并遍历所有controller文件中所有action开头的所有方法，方法注释规范如下：
+1、方法注释规范如下：
 
   注释参数  | 作用 | 备注
   ------------- | ------------- |  -------------
@@ -118,12 +110,9 @@ apidoc-name    | 模块名称，将显示在页面上方 |
  detail        | 接口说明，将会显示在页面右方      |
 
 
-
 ## 示例：
 先配置好phpstome注释配置。
 1、配置modules模块注释
 2、配置controller类的注释
 3、配置action的注释
 
-## 感谢:
-基于 landrain/yii2-apidoc开发

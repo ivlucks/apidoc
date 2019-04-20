@@ -29,7 +29,7 @@ $this->title = '接口系统文档';
                     <li class="dropdown"></li>
                     <li><span>&nbsp;<br></span></li>
                     <li><span>&nbsp;<br></span></li>
-                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>" class="append-16" ><br></a></li>
+                    <li ><a href="#"> 令牌:<input id="accessToken" name="<?=$this->context->module->tokenname?>" value="<?=$token?>"><br></a></li>
                 </ul>
             </div>
         </nav>
@@ -57,10 +57,7 @@ $this->title = '接口系统文档';
                                 $actionName     = $aname;
                                 $apiUri         = "/" . $moduleName . "/" . $controllerName . "/" . $actionName;
                                 ?>
-                                <?php
-                                echo Html::a($a['brief'] . $apiUri,
-                                    ['/apidoc/default/index', 'parent' => '', 'module' => $module, 'controller' => $cname, 'action' => $aname],
-                                    ['title' => '【controller】' . $cname . "\n" . '【action】' . $aname, 'id' => 'collapse' . $aname, 'class' => 'list-group-item' . ($action == $aname ? ' active' : '')])
+                                <?=Html::a($a['brief'] . $apiUri, ['/apidoc/default/index', 'parent' => '', 'module' => $module, 'controller' => $cname, 'action' => $aname], ['title' => '【controller】' . $cname . "\n" . '【action】' . $aname, 'id' => 'collapse' . $aname, 'class' => 'list-group-item' . ($action == $aname ? ' active' : '')])
                                 ?>
                             <?php }
                                  } ?>
@@ -89,28 +86,23 @@ $this->title = '接口系统文档';
                             $_module = lcfirst($module) . '/' ;
                         }
                         $url = \Yii::$app->urlManager->createAbsoluteUrl('' . '/' .$_module. lcfirst($shortController) . '/' . lcfirst($action));
-                        $url = str_ireplace('/-', '/', preg_replace_callback('/[A-Z]/', function ($match) { return '-' . strtolower($match[0]);}, $url));
+                        $url  = str_ireplace('/-', '/', preg_replace_callback('/[A-Z]/', function ($match) { return '-' . strtolower($match[0]);}, $url));
+                        $_url = $url;
                         if($token){
-                            if($this->context->module->token_type==1) $url         =  $url.'?'.$this->context->module->tokenname.'='.$token;
+                            if($this->context->module->token_type==1) $_url         =  $url.'?'.$this->context->module->tokenname.'='.$token;
                             if($this->context->module->token_type==3){
                                 $headers[]   =  "Accept:application/json";
                                 $headers[]   =  "Authorization: Bearer ". $token;
                             }
                         }
-                        echo $url;
+                        echo $_url;
                         \Yii::$app->urlManager->baseUrl  ='';
                         ?>" enctype="multipart/form-data">
                             <?php foreach ($params as $i => $p): ?>
                                 <div class="form-group">
                                     <?= Html::label($p['brief'], "param-{$i}-{$p['name']}", ['class' => 'col-sm-3 control-label']) ?>
                                     <div class="col-sm-9">
-                                        <?php if (!empty($loginInfo['uid']) && $p['name'] == 'uid') {
-                                            echo Html::textInput($p['name'], $loginInfo['uid'],
-                                                ['class' => 'form-control', 'id' => "param-{$i}-{$p['name']}", 'placeholder' => $p['type'] . ' ' . $p['name']]);
-                                        } else if (!empty($loginInfo['sid']) && $p['name'] == 'sid') {
-                                            echo Html::textInput($p['name'], $loginInfo['sid'],
-                                                ['class' => 'form-control', 'id' => "param-{$i}-{$p['name']}", 'placeholder' => $p['type'] . ' ' . $p['name']]);
-                                        } else {
+                                        <?php
                                             if ($p['type'] == 'file') {
                                                 echo '<input type="file" onclick="" name="' . $p['name'] . '" placeholder="" value="">';
                                             } elseif ($p['type'] == 'files') {
@@ -119,11 +111,9 @@ $this->title = '接口系统文档';
                                                 echo '<input type="file" onclick="" name="' . $p['name'] . '[]" placeholder="" value="">';
                                             } else {
                                                 $defaultValue = rtrim(ltrim($p['default'], "("), ")");
-                                                echo Html::textInput($p['name'], $defaultValue,
-                                                    ['class' => 'form-control', 'id' => "param-{$i}-{$p['name']}", 'placeholder' => $p['type'] . ' ' . $p['name']]);
+                                                echo Html::textInput($p['name'], $defaultValue, ['class' => 'form-control', 'id' => "param-{$i}-{$p['name']}", 'placeholder' => $p['type'] . ' ' . $p['name']]);
                                             }
-                                        } ?>
-
+                                        ?>
                                     </div>
                                 </div>
                             <?php endforeach ?>
@@ -168,12 +158,7 @@ $this->title = '接口系统文档';
                     <h3 class="panel-title"><?= Language::t('interfaceExplain');?></h3>
                 </div>
                 <div class="panel-body">
-                    <p><span style="display: inline-block;padding-right: 5px;font-weight: bold;"><?= Language::t('interfaceUri');?>:</span>
-                        <?php
-                        if (!empty($url)) {
-                            echo substr($url, strpos($url, '/', 7) + 1);
-                        }
-                        ?></p>
+                    <p><span style="display: inline-block;padding-right: 5px;font-weight: bold;"><?= Language::t('interfaceUri');?>:</span><?php if (!empty($url)) echo substr($url, strpos($url, '/', 7) + 1); ?></p>
                     <p>
                         <span style="display: inline-block;padding-right: 5px;font-weight: bold;"><?= Language::t('interfaceExplainMethod');?>:</span><?php echo $method ?>
                     </p>
@@ -229,7 +214,6 @@ $this->title = '接口系统文档';
 
 <script>
     $(function () {
-        var userLoginUrl = '<?=\Yii::$app->urlManager->createUrl('/apidoc/default/userlogin')?>';
         var _url         = '<?=\Yii::$app->urlManager->createUrl('/apidoc/default')?>';
         var folder       = '<?=$this->context->module->assetsUrl?>';
         $('#invokeBtn').click(function (e) {
@@ -288,33 +272,6 @@ $this->title = '接口系统文档';
         $(this).hide();
         $('#outputExpand').show();
     });
-    $('#loginBtn').click(function (e) {
-        e.preventDefault();
-        var timestamp = (new Date()).valueOf();
-        $('#loginErrorText').hide();
-        $('#loginForm').ajaxSubmit(function (result) {
-            //var result = $.parseJSON(resp);
-            if (result.res && result.ret == true) {
-                var account = $('#loginForm-account').val();
-                // console.log(sid);
-                var sid = result.res.source.sid;
-                var uid = result.res.source.uid;
-
-                $('#loginInfo-account').text(account);
-                $('#loginInfo-sid').text(sid);
-                $('#loginInfo-uid').text(uid);
-
-                $.get(userLoginUrl, {account: account, sid: sid, uid: uid});
-
-                $('#accountBtn').show();
-                $('#loginBtn').hide();
-            } else {
-                $('#loginErrorText')
-                    .text(result.res.result.errMsg + '[' + result.res.result.errCode + ']')
-                    .show();
-            }
-        });
-    });
     function reStoreInputVal(paramsObj, apiUrl) {
         if (window.localStorage) {
             for (var key in paramsObj) {
@@ -332,26 +289,20 @@ $this->title = '接口系统文档';
 
     function rePutDataToInputFromlocalStorageData() {
         var inputObj = $('#invokeForm').find('input');
-        if (!inputObj) {
-            return false;
-        }
+        if (!inputObj) return false;
         var formActionUrl = $("#invokeForm").attr("action");
-
         for (var i = 0; i < inputObj.length; i++) {
             var inputType = $(inputObj[i]).attr("type");
             var inputName = $(inputObj[i]).attr("name");
             if (inputType == 'hidden' || inputName == 'uid' || inputName == 'phone' || inputName == 'sid' || inputName == 'account') {
                 continue;
             }
-
             var localStorageKey = formActionUrl + '_' + inputName;
-
             var cacheValue = localStorage.getItem(localStorageKey);
             if (cacheValue) {
                 $(inputObj[i]).val(cacheValue);
             }
         }
     }
-
     rePutDataToInputFromlocalStorageData();
 </script>
