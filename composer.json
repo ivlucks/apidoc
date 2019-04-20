@@ -1,6 +1,6 @@
 {
   "name": "junguo/yii2-apidoc",
-  "description": "本系统适合中小型公司使用,可调试,可作为文档.提高开发效率,提高生产力",
+  "description": "适合中小型公司使用,可调试,可作为文档.提高开发效率,提高生产力",
   "keywords": ["yii2", "api", "doc", "php exlanatory"],
   "license": "Apache-2.0",
   "type": "yii2-extension",
