@@ -106,6 +106,7 @@ class DefaultController extends \yii\web\Controller
                                     $name       = $m->getName();
                                     if (!preg_match('/action*/', $m) || $name == 'actions') continue;
                                     $_name = preg_replace('/action/','',strtolower($name));
+//                                    gengxin
                                     if( $m->class != $rc->name){
                                         if(!empty($funs)){
                                             if(!in_array($_name,$funs))continue;
