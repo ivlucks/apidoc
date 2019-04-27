@@ -226,6 +226,7 @@ class DefaultController extends \yii\web\Controller
             else $this->render('error', $error);
         }
     }
+    public $enableCsrfValidation = false;
     /**
      * @brief 登入
      */
