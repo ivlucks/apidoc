@@ -50,7 +50,6 @@ $config['modules']['apidoc'] = [
   class  | 模块入口 |
   password | 登录模块的密码 |
   ipFilters | IP登录限制 |
-  subOfClasses | 需要继承的指定class,若为空则将所有controller囊括，否则必须继承这些类才会显示在页面上
   apppath    |api模块路径
   ctrs      | api下根controllers,可多个
   tokenname  | 测试时使用.
