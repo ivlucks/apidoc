@@ -10,6 +10,7 @@ header('Content-type:text/html;charset=utf-8');
 class DefaultController extends \yii\web\Controller
 {
     public $layout = 'column1';
+    public $enableCsrfValidation = false;
     public function actionIndex($parent = '', $module = 'user', $controller = '', $action = '')
     {
         $modules          = $this->getReflectionModules($parent);
@@ -226,7 +227,6 @@ class DefaultController extends \yii\web\Controller
             else $this->render('error', $error);
         }
     }
-    public $enableCsrfValidation = false;
     /**
      * @brief 登入
      */
