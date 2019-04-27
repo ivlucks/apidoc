@@ -106,7 +106,13 @@ class DefaultController extends \yii\web\Controller
                                     $name       = $m->getName();
                                     if (!preg_match('/action*/', $m) || $name == 'actions') continue;
                                     $_name = preg_replace('/action/','',strtolower($name));
-                                    if( $m->class != $rc->name) if(!empty($funs)) if(!in_array($_name,$funs))continue;
+                                    if( $m->class != $rc->name){
+                                        if(!empty($funs)){
+                                            if(!in_array($_name,$funs))continue;
+                                        } else{
+                                            continue;
+                                        }
+                                    }
                                     if (!strncasecmp($name, 'action', 6) && $name != 'actions') {
                                         $method = new \ReflectionMethod($class, $name);
                                         if (preg_match('/@api-disable/', $method->getDocComment())) continue;
