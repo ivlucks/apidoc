@@ -5,7 +5,7 @@
     4、增加令牌,方便测试,过期再生成,自动保存
     5、精简参数
     6、开放权限下降class,method.mould无需标注
-    7、继承的类的方法需要显式标注
+    7、继承类的方法需要显式标注才显示
     8、删除bootstrap,不再因加载困扰
 ## 安装
 composer require junguo/yii2-apidoc
