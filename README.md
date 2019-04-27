@@ -106,7 +106,7 @@ PHP Class Doc Comment
  throws        | 异常声明，将会显示在页面右方      |
  detail        | 接口说明，将会显示在页面右方      |
  api-disable   | 接口说明，默认显示,如显式增加为隐藏class或者method      |
- ext-enable    | 接口说明，默认隐藏继承的类的method,如无显式标注不显示, 多个method逗号分隔,无需加action     |
+ ext-enable    | 接口说明，默认隐藏继承类的method,如无显式标注不显示, 多个method逗号分隔,无需加action     |
 
 ## 示例：
 先配置好phpstome注释配置。
