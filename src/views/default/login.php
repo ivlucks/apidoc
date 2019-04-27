@@ -26,9 +26,9 @@
         margin-bottom: 10px;
     }
 </style>
-<form id="login-form" class="form-signin" role="form" method="post" action="">
-  <input type="hidden"  name="_csrf" value="<?= Yii::$app->request->csrfToken ?>" />
+<form id="login-form" class="form-signin" role="form" method="post">
 <h2 class="form-signin-heading ">请登录</h2>
+<input type="hidden" value="<?php echo Yii::$app->request->csrfToken; ?>" name="_csrf" >
 <div class="form-group field-manager-realname has-success">
     <input type="password" id="loginform-password" class="form-control" name="LoginForm[password]" aria-required="true">
 </div>
