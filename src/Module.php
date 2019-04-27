@@ -7,27 +7,8 @@ use junguo\apidoc\models\User;
 
 class Module extends \yii\base\Module
 {
-    /**
-     * @var string the password that can be used to access Module.
-     * If this property is set false, then Module can be accessed without password
-     * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
-     */
     public $password;
-
-    /**
-     * @var array the IP filters that specify which IP addresses are allowed to access Module.
-     * Each array element represents a single filter. A filter can be either an IP address
-     * or an address with wildcard (e.g. 192.168.0.*) to represent a network segment.
-     * If you want to allow all IPs to access , you may set this property to be false
-     * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
-     * The default value is array('127.0.0.1', '::1'), which means Module can only be accessed
-     * on the localhost.
-     */
     public $ipFilters =['127.0.0.1', '::1'];
-    /**
-     * @var string 签名获取接口
-     */
-    public $signUrl;
     public $secretKey = [];
     private $_assetsUrl;
     public $dropdownList;
@@ -35,14 +16,14 @@ class Module extends \yii\base\Module
     public $subOfClasses;
     public $language = 'zh';
     public $apppath = 'api';
-    public $tokenname = 'accessToken';
+    public $tokenname = 'access-token';
     public $domain='';
-    public $ctrs='';
-/*
- * 1 url(get 传参)
- * 2 参数(POST 传参)
- * 3 header Bearer
- * */
+    public $ctrs=[];
+    /**
+     * 1 url(get 方式传参)
+     * 2 参数(POST 方式传参)
+     * 3 header Bearer
+     * */
     public $token_type='1';
     /**
      * Initializes the  module.

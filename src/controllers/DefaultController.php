@@ -91,31 +91,24 @@ class DefaultController extends \yii\web\Controller
                                 $actions = [];
                                 $class_name = str_replace('Controller','',substr($d, 0, -4));
                                 $rc  = new \ReflectionClass($class);
-                                $prc = new \ReflectionClass(get_parent_class($class));;
                                 if (!$this->isSubclassOfList($rc))continue;
-                                if (preg_match('/@api-disable/', $rc->getDocComment())){
-                                    continue;
-                                }
-//                                if (preg_match('/@ext-inable'  . '([\s]+)([a-zA-Z]+)\b([^@]+)/u', $rc->getDocComment(),$mathches)){
-//                                     $outfun   =   str_replace('*', '', $mathches[0]);
-//                                     $outfun   =   str_replace('@ext-inable', '', $outfun );
-//                                     $outfun   =   str_replace('  ', ' ', $outfun );
-//                                     $outfun   =   preg_replace("/\s/","",$outfun);
-//                                     $funs     =  explode(',',strtolower($outfun));
-//                                 }
-                                $rm  = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
-//                                $prm = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
+                                if (preg_match('/@api-disable/', $rc->getDocComment())) continue;
+                                if (preg_match('/@ext-enable'  . '([\s]+)([a-zA-Z]+)\b([^@]+)/u', $rc->getDocComment(),$mathches)){
+                                     $outfun   =   str_replace('*', '', $mathches[0]);
+                                     $outfun   =   str_replace('@ext-enable', '', $outfun );
+                                     $outfun   =   str_replace('  ', ' ', $outfun );
+                                     $outfun   =   preg_replace("/\s/","",$outfun);
+                                     $funs     =  explode(',',strtolower($outfun));
+                                 }
+                                $rm            = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
                                 foreach ($rm as $m) {
-                                    $name  = $m->getName();
-
+                                    $name       = $m->getName();
                                     if (!preg_match('/action*/', $m) || $name == 'actions') continue;
-//                                    $_name = preg_replace('/action/','',strtolower($name));
-//                                    if(in_array($_name,$funs))continue;
+                                    $_name = preg_replace('/action/','',strtolower($name));
+                                    if( $m->class != $rc->name) if(!empty($funs)) if(!in_array($_name,$funs))continue;
                                     if (!strncasecmp($name, 'action', 6) && $name != 'actions') {
                                         $method = new \ReflectionMethod($class, $name);
-                                        if (preg_match('/@api-disable/', $method->getDocComment())){
-                                            continue;
-                                        }
+                                        if (preg_match('/@api-disable/', $method->getDocComment())) continue;
                                         $actions[substr($name, 6)] = array_merge([
                                             'id'      => substr($name, 6),
                                             'version' => 1,
@@ -141,12 +134,13 @@ class DefaultController extends \yii\web\Controller
     /**
      * @brief 反射模块
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     protected function getReflectionModules($parent = '')
     {
         $modules = [];
         $dir     = \Yii::getAlias('@'.$this->module->apppath.'/modules' . ($parent == '' ? '' : '/' . $parent . '/modules'));
+
         if (!is_dir($dir)) return false;
         $dirs    = scandir($dir);
         foreach ($dirs as $d) {
@@ -213,7 +207,7 @@ class DefaultController extends \yii\web\Controller
         unset($part[1]);
         $detail = implode(' ',$part);
         if ('unknown' != $param['name'] && !empty($param['name'])) {
-            $param['detail']   = $detail??"未注明";
+            $param['detail']   = $detail?$detail:"未注明";
             $param['brief']    = str_replace('$', '', $param['name']);
             $param['default']  = '';
         }
@@ -232,7 +226,23 @@ class DefaultController extends \yii\web\Controller
             else $this->render('error', $error);
         }
     }
-
+    /**
+     * @brief 登入
+     */
+    public function actionLogin()
+    {
+        $model = new LoginForm();
+        if (isset($_POST['LoginForm'])) {
+            $model->attributes = $_POST['LoginForm'];
+            if ($model->validate() && $model->login()) {
+                $this->redirect(\yii::$app->urlManager->createUrl('apidoc/default/index'));
+            }
+        }
+        return $this->render('login', array('model' => $model));
+    }
+    /**
+     * @desc 保存token
+     * **/
     public function actionAjaxToken()
     {
       return Yii::$app->cache->set($this->module->tokenname,Yii::$app->request->get('token'));
