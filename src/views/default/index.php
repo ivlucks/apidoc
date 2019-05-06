@@ -231,7 +231,7 @@ $this->title = '接口系统文档';
                   <?php } ?>
                     loadIndex = layer.load(1);
                 },
-
+                type:"<?=$method?>",
                 success: function (resp) {
                     layer.close(loadIndex);
                     $QueryUrl = $(this)[0]['url'];
